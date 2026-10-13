@@ -94,6 +94,7 @@ svg .org{cursor:pointer;transition:transform .2s}svg .org:hover{opacity:.8}
 <section id="test"><h2>⏱️ Timed Practice Test (25 questions)</h2><div id="testBox"><p>Mixed questions from every part, shuffled. You have 15 minutes. Good luck, Richard!</p><button class="btn alt" onclick="startTest()">Start test</button></div></section>
 <p class="center" style="color:#4a6350">Made for Richard • Also see the <a href="../">cell organelles guide</a></p>
 </main>
+<script src="audio1.js"></script><script src="audio2.js"></script><script src="audio3.js"></script><script src="audio4.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 const KEY=[
@@ -124,35 +125,63 @@ const MC=[["The cell theory states that:",["Only animals are made of cells","All
 const MATCH=[["Cell wall","Supports and protects plant cells"],["Chloroplast","Makes sugar using light energy"],["Cell membrane","Controls what enters and leaves"],["Cytoplasm","Jelly-like fluid holding organelles"],["Nucleus","Contains DNA, directs activities"],["Ribosome","Builds proteins"],["Mitochondrion","Releases energy from food"],["Golgi bodies","Modifies, sorts, packages materials"],["Endoplasmic reticulum","Transports materials in the cell"],["Lysosome","Breaks down waste"],["Vacuole","Stores water and materials"]];
 const TF=[["All living things are made of cells.",true,""],["Bacteria are eukaryotic cells.",false,"Bacteria are PROKARYOTIC; they have no nucleus."],["Eukaryotic cells have a nucleus.",true,""],["Ribosomes make proteins.",true,""],["Chloroplasts release energy through cellular respiration.",false,"MITOCHONDRIA release energy; chloroplasts make sugar from light."],["Plant cells have a cell wall.",true,""],["Homeostasis means changing over many generations.",false,"Homeostasis means maintaining stable internal conditions. (Change over generations is evolution.)"],["Limited resources can cause competition.",true,""],["Individual organisms choose to change their traits to survive.",false,"Individuals don't choose traits; populations change over generations as inherited traits affect survival."],["Organs work together to form organ systems.",true,""]];
 const SA=[["Name two things all living things need.","Any two: water, nutrients or food, space, air or gases like oxygen."],["What is the difference between prokaryotic and eukaryotic cells?","Prokaryotic cells, like bacteria, have no nucleus or membrane-bound organelles. Eukaryotic cells, like plants and animals, have a nucleus and membrane-bound organelles."],["How are cells, tissues, organs, and organ systems related?","Cells group into tissues, tissues form organs, organs work together in organ systems, and organ systems make up an organism. Each level builds on the one before."],["Name two organelles and explain how they help the cell work.","Example: Ribosomes make proteins, and the Golgi bodies package and ship them. Or: mitochondria release energy, and the nucleus directs everything."],["What can happen when resources are limited?","Organisms compete for food, water, and space. Some don't survive, so the population size can shrink or stay limited."],["What is the difference between adaptation and homeostasis?","Homeostasis is an individual keeping stable internal conditions right now, like sweating. Adaptation is an inherited trait that helps survival, and it spreads through a population over generations by evolution."]];
+const WATCH=["Watch out, Richard!","Ribosome is not the same as Lysosome! On the practice sheet, the question, which organelle makes proteins, was answered lysosome. The right answer is ribosome. Trick: ribosome is the robot factory that builds. Lysosome is the litter, or trash can, that breaks things down.","Spell these right: mitochondria, m i t o c h o n d r i a. Ribosomes. Nucleus for one, nuclei for many. Eukaryotic, think: you carry a nucleus. Prokaryotic: pro means no nucleus.","Don't leave blanks! Number three, eukaryotic, was blank. If you're stuck, use the word bank and cross off words you already used.","Mitochondria versus chloroplast: mitochondria are the battery that releases energy from sugar. The chloroplast is the sugar jar that makes sugar from sunlight."];
+const SP=["mitochondria","ribosomes","nucleus","eukaryotic","prokaryotic","chloroplast","cytoplasm","lysosome","homeostasis","endoplasmic reticulum"];
+const LET="ABCDEFGHIJK";
+const keyT=k=>k[0].replace(/^\S+ /,"")+". "+k[1];
+const orgT=o=>o[0]+". Memory hook: "+o[2]+". "+o[3]+" If it's missing: "+o[4];
+const tfFb=(t,ok)=>(ok?"Correct! ":"Oops! ")+"It's "+(t[1]?"TRUE.":"FALSE. Fix: "+t[2]);
+const SECS={key:()=>KEY.map(keyT),org:()=>Object.values(ORG).map(orgT),watch:()=>WATCH,
+fill:()=>FILL.flatMap((f,i)=>["Number "+(i+1)+".",f[0]]),
+mc:()=>MC.flatMap((q,i)=>["Number "+(i+1)+".",q[0],...q[1].flatMap((c,j)=>[LET[j],c])]),
+match:()=>["Match each organelle to its function.",...MATCH.flatMap(m=>[m[0],m[1]])],
+tf:()=>TF.flatMap((t,i)=>["Number "+(i+1)+".",t[0]]),sa:()=>SA.flatMap((q,i)=>["Number "+(i+1)+".",q[0]])};
+function allTexts(){const T=new Set();const a=x=>T.add(x);
+Object.values(SECS).forEach(f=>f().forEach(a));
+Object.values(ORG).forEach(o=>{a(o[0]);a(o[1]+" "+o[0]);a(o[2]+" — "+o[3])});
+BANK.forEach(a);MC.forEach(q=>q[1].forEach(c=>{a(c);a("The answer is "+c+".");a("Not quite. The answer is "+c)}));
+MATCH.forEach(m=>{a("What does the "+m[0]+" do?");a(m[1]);a("The answer is "+m[1]+".")});
+BANK.forEach(w=>a("The answer is "+w+"."));
+TF.forEach(t=>{a("True or false: "+t[0]);a(tfFb(t,true));a(tfFb(t,false));if(t[2])a(t[2])});
+SA.forEach(q=>a("Model answer: "+q[1]));SP.forEach(w=>a("Spell: "+w));
+["Correct!","True","False","True or false?","The answer is True.","The answer is False.","Sorry, I didn't catch that. Try again or tap your answer."].forEach(a);
+for(let n=0;n<=22;n++)a("You got "+n+" out of 22");for(let n=0;n<=11;n++)a("You matched "+n+" out of 11");
+for(let n=0;n<=10;n++)a("Quiz over! You got "+n+" out of 10. Great job Richard!");
+for(let n=0;n<=25;n++)a("Test finished. You scored "+n+" out of 25, "+Math.round(n/25*100)+" percent.");
+return [...T]}
+const NK=t=>t.replace(/___/g,"blank").replace(/→/g,", then ").replace(/—/g,", ").replace(/[^\x20-\x7E]/g,"").replace(/\s+/g," ").trim();
 /* voice */
-let synth=window.speechSynthesis,voice=null;
+let synth=window.speechSynthesis,voice=null,cur=null,seqId=0;
+function tts(t,cb){if(!synth){cb&&cb();return}const u=new SpeechSynthesisUtterance(t);if(voice)u.voice=voice;u.rate=+$("rate").value;u.onend=()=>cb&&cb();u.onerror=()=>cb&&cb();synth.speak(u)}
+function playParts(parts,cb){stopAll();const id=++seqId;let i=0;const next=()=>{if(id!==seqId)return;if(i>=parts.length){cb&&cb();return}const k=NK(String(parts[i++]||""));if(!k)return next();const c=window.CLIPS&&CLIPS[k];if(c){cur=new Audio("data:audio/mpeg;base64,"+c);cur.playbackRate=+$("rate").value;cur.onended=next;cur.onerror=()=>tts(k,next);cur.play().catch(()=>{})}else tts(k,next)};next()}
+$("rate").oninput=()=>{if(cur)cur.playbackRate=+$("rate").value};
 function pickVoice(){if(!synth)return;const v=synth.getVoices();voice=v.find(x=>/en-US/.test(x.lang)&&/Natural|Google|Samantha|Aria|Jenny/i.test(x.name))||v.find(x=>/^en/.test(x.lang))||null}
 if(synth){pickVoice();synth.onvoiceschanged=pickVoice}
-function say(t,cb){if(!synth){alert("Voice isn't supported on this browser.");cb&&cb();return}synth.cancel();const u=new SpeechSynthesisUtterance(t.replace(/___/g,"blank").replace(/→/g,", then "));if(voice)u.voice=voice;u.rate=+$("rate").value;u.onend=()=>cb&&cb();synth.speak(u)}
-function stopAll(){synth&&synth.cancel();if(rec)try{rec.abort()}catch(e){}}
+function say(t,cb){playParts(Array.isArray(t)?t:[t],cb)}
+function stopAll(){seqId++;if(cur){cur.pause();cur=null}synth&&synth.cancel();if(rec)try{rec.abort()}catch(e){}}
 const spk=t=>{const b=document.createElement("button");b.className="spk";b.textContent="🔊";b.title="Read aloud";b.onclick=e=>{e.stopPropagation();say(t)};return b};
-function readSec(id){const s=$(id).cloneNode(true);s.querySelectorAll("button,select,input,.reveal,.bank").forEach(n=>n.remove());say(s.innerText)}
+function readSec(id){say(SECS[id]())}
 function card(h,html,t){const d=document.createElement("div");d.className="card";d.innerHTML="<h3>"+h+"</h3>"+html;d.appendChild(spk(t));return d}
 /* render */
-KEY.forEach(k=>$("keyGrid").appendChild(card(k[0],"<p>"+k[1]+"</p>",k[0].replace(/^\S+ /,"")+". "+k[1])));
-function orgText(o){return o[0]+". Memory hook: "+o[2]+". "+o[3]+" If it's missing: "+o[4]}
+KEY.forEach(k=>$("keyGrid").appendChild(card(k[0],"<p>"+k[1]+"</p>",keyT(k))));
+const orgText=orgT;
 Object.values(ORG).forEach(o=>$("orgGrid").appendChild(card(o[0],'<div class="hook">'+o[1]+'</div><b>'+o[2]+'</b><p>'+o[3]+'</p><span class="tag">📍 '+o[5]+'</span><div class="miss">❓ If missing: '+o[4]+'</div>',orgText(o))));
 document.querySelectorAll(".org").forEach(el=>el.addEventListener("click",()=>{const o=ORG[el.dataset.o];$("info").innerHTML="<b>"+o[1]+" "+o[0]+"</b> — <i>"+o[2]+"</i><br>"+o[3]+"<br><small>📍 "+o[5]+" • If missing: "+o[4]+"</small>";say(orgText(o))}));
 const norm=s=>s.toLowerCase().replace(/[^a-z ]/g,"").replace(/\s+/g," ").trim();
 BANK.forEach(w=>{const s=document.createElement("span");s.className="tag";s.style.background="#c8e6c9";s.textContent=w;$("bank").appendChild(s)});
 FILL.forEach((f,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML="<b>"+(i+1)+".</b> "+f[0].replace("___",'<select id="f'+i+'"><option value="">—choose—</option>'+BANK.map(w=>"<option>"+w+"</option>").join("")+"</select>")+'<div class="fb" id="ff'+i+'"></div>';d.appendChild(spk(f[0]));$("fillQs").appendChild(d)});
 function checkFill(){let s=0;FILL.forEach((f,i)=>{const ok=$("f"+i).value===f[1];s+=ok;$("ff"+i).className="fb "+(ok?"ok":"no");$("ff"+i).textContent=ok?"✅ Correct!":"❌ Answer: "+f[1]});$("fillScore").textContent="Score: "+s+"/22";say("You got "+s+" out of 22")}
-function mcRender(arr,box,scoreEl){let s=0,n=0;arr.forEach((q,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML="<b>"+(i+1)+". "+q[0]+"</b>";const o=document.createElement("div");o.className="opts";q[1].forEach((c,j)=>{const b=document.createElement("button");b.textContent="ABCD"[j]+") "+c;b.onclick=()=>{if(o.dataset.done)return;o.dataset.done=1;n++;b.classList.add(j===q[2]?"ok":"no");o.children[q[2]].classList.add("ok");if(j===q[2]){s++;say("Correct!")}else say("Not quite. The answer is "+q[1][q[2]]);if(scoreEl)scoreEl.textContent="Score: "+s+"/"+n};o.appendChild(b)});d.appendChild(o);d.appendChild(spk(q[0]+" "+q[1].map((c,j)=>"ABCD"[j]+", "+c).join(". ")));box.appendChild(d)})}
+function mcRender(arr,box,scoreEl){let s=0,n=0;arr.forEach((q,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML="<b>"+(i+1)+". "+q[0]+"</b>";const o=document.createElement("div");o.className="opts";q[1].forEach((c,j)=>{const b=document.createElement("button");b.textContent="ABCD"[j]+") "+c;b.onclick=()=>{if(o.dataset.done)return;o.dataset.done=1;n++;b.classList.add(j===q[2]?"ok":"no");o.children[q[2]].classList.add("ok");if(j===q[2]){s++;say("Correct!")}else say("Not quite. The answer is "+q[1][q[2]]);if(scoreEl)scoreEl.textContent="Score: "+s+"/"+n};o.appendChild(b)});d.appendChild(o);d.appendChild(spk([q[0],...q[1].flatMap((c,j)=>["ABCD"[j],c])]));box.appendChild(d)})}
 mcRender(MC,$("mcQs"),$("mcScore"));
 const L="ABCDEFGHIJK",mix=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
 const mOrder=mix(MATCH.map((_,i)=>i));
 $("matchQs").innerHTML="<p><b>Functions:</b><br>"+mOrder.map((k,j)=>L[j]+") "+MATCH[k][1]).join("<br>")+"</p>";
 MATCH.forEach((m,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML=(i+1)+". <b>"+m[0]+"</b> → <select id=\"m"+i+"\"><option value=''>?</option>"+mOrder.map((k,j)=>"<option value='"+k+"'>"+L[j]+"</option>").join("")+'</select> <span class="fb" id="mf'+i+'"></span>';d.appendChild(spk(m[0]));$("matchQs").appendChild(d)});
 function checkMatch(){let s=0;MATCH.forEach((m,i)=>{const ok=$("m"+i).value==i;s+=ok;$("mf"+i).className="fb "+(ok?"ok":"no");$("mf"+i).textContent=ok?"✅":"❌ "+m[1]});$("matchScore").textContent="Score: "+s+"/11";say("You matched "+s+" out of 11")}
-let tfS=0,tfN=0;TF.forEach((t,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML="<b>"+(i+1)+".</b> "+t[0]+'<br><button class="btn sm">True</button><button class="btn sm alt">False</button><div class="fb"></div>';const [bt,bf]=d.querySelectorAll("button"),fb=d.querySelector(".fb");[bt,bf].forEach((b,j)=>b.onclick=()=>{if(fb.textContent)return;const ok=(j===0)===t[1];tfN++;tfS+=ok;fb.className="fb "+(ok?"ok":"no");fb.textContent=(ok?"✅ Correct! ":"❌ Oops! ")+"It's "+(t[1]?"TRUE.":"FALSE. Fix: "+t[2]);say(fb.textContent);$("tfScore").textContent="Score: "+tfS+"/"+tfN});d.appendChild(spk(t[0]));$("tfQs").appendChild(d)});
+let tfS=0,tfN=0;TF.forEach((t,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML="<b>"+(i+1)+".</b> "+t[0]+'<br><button class="btn sm">True</button><button class="btn sm alt">False</button><div class="fb"></div>';const [bt,bf]=d.querySelectorAll("button"),fb=d.querySelector(".fb");[bt,bf].forEach((b,j)=>b.onclick=()=>{if(fb.textContent)return;const ok=(j===0)===t[1];tfN++;tfS+=ok;fb.className="fb "+(ok?"ok":"no");fb.textContent=(ok?"✅ ":"❌ ")+tfFb(t,ok);say(tfFb(t,ok));$("tfScore").textContent="Score: "+tfS+"/"+tfN});d.appendChild(spk(t[0]));$("tfQs").appendChild(d)});
 SA.forEach((q,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML="<b>"+(i+1)+". "+q[0]+'</b><br><textarea rows="2" style="width:100%"></textarea><button class="btn sm">Check yourself</button><div class="reveal">⭐ Model answer: '+q[1]+"</div>";d.querySelector("button").onclick=()=>{d.querySelector(".reveal").style.display="block";say("Model answer: "+q[1])};d.appendChild(spk(q[0]));$("saQs").appendChild(d)});
 /* spelling */
-const SP=["mitochondria","ribosomes","nucleus","eukaryotic","prokaryotic","chloroplast","cytoplasm","lysosome","homeostasis","endoplasmic reticulum"];let spW=SP[0];
+let spW=SP[0];
 function spSay(){spW=SP[Math.floor(Math.random()*SP.length)];$("spIn").value="";$("spFb").textContent="";say("Spell: "+spW)}
 function spCheck(){const ok=norm($("spIn").value)===spW;$("spFb").className="fb "+(ok?"ok":"no");$("spFb").textContent=ok?"✅ Perfect spelling!":"❌ It's spelled: "+spW}
 /* flashcards */
@@ -171,8 +200,8 @@ function qmStart(){QM=pool().slice(0,10);qi=0;qs=0;qmAsk()}
 function qmAsk(){const box=$("qm");if(qi>=QM.length){box.innerHTML='<p class="center score" style="color:#fff">Quiz Master score: '+qs+"/"+QM.length+'</p><p class="center"><button class="btn" onclick="qmStart()">Play again</button></p>';say("Quiz over! You got "+qs+" out of "+QM.length+". Great job Richard!");return}
 const q=QM[qi];box.innerHTML="<p>Question "+(qi+1)+" of "+QM.length+"</p><h3>"+q.q+'</h3><div class="opts"></div><p>'+(SR?'<button class="btn mic" id="micB">🎤 Say answer</button>':"<small>🎤 Speaking answers needs Chrome or Edge. Tap instead!</small>")+' <button class="btn sm" onclick="qmRead()">🔁 Repeat</button></p><div class="fb" id="qmFb"></div>';
 const o=box.querySelector(".opts");q.o.forEach((c,j)=>{const b=document.createElement("button");b.textContent=(q.o.length>2?"ABCD"[j]+") ":"")+c;b.onclick=()=>qmAns(j);o.appendChild(b)});if(SR)$("micB").onclick=listen;qmRead()}
-function qmRead(){const q=QM[qi];say(q.q+". "+(q.o.length>2?q.o.map((c,j)=>"ABCD"[j]+", "+c).join(". "):"True or false?"))}
-function qmAns(j){const q=QM[qi],o=$("qm").querySelector(".opts");if(o.dataset.done)return;o.dataset.done=1;o.children[q.a].classList.add("ok");const ok=j===q.a;if(!ok&&j>=0)o.children[j].classList.add("no");qs+=ok;const msg=ok?"Correct!":"The answer is "+q.o[q.a]+". "+(q.x||"");$("qmFb").className="fb "+(ok?"ok":"no");$("qmFb").textContent=(ok?"✅ ":"❌ ")+msg;say(msg,()=>setTimeout(()=>{qi++;qmAsk()},700))}
+function qmRead(){const q=QM[qi];say([q.q,...(q.o.length>2?q.o.flatMap((c,j)=>["ABCD"[j],c]):["True or false?"])])}
+function qmAns(j){const q=QM[qi],o=$("qm").querySelector(".opts");if(o.dataset.done)return;o.dataset.done=1;o.children[q.a].classList.add("ok");const ok=j===q.a;if(!ok&&j>=0)o.children[j].classList.add("no");qs+=ok;const parts=ok?["Correct!"]:["The answer is "+q.o[q.a]+".",q.x||""];$("qmFb").className="fb "+(ok?"ok":"no");$("qmFb").textContent=(ok?"✅ ":"❌ ")+parts.join(" ");say(parts,()=>setTimeout(()=>{qi++;qmAsk()},700))}
 function listen(){stopAll();rec=new SR();rec.lang="en-US";rec.maxAlternatives=3;$("qmFb").textContent="🎤 Listening...";
 rec.onresult=e=>{const alts=[...e.results[0]].map(r=>norm(r.transcript));const q=QM[qi];let pick=-1;
 for(const h of alts){q.o.forEach((c,j)=>{const n=norm(c);if(pick<0&&(h===n||h.includes(n)||(n.length>3&&n.includes(h)&&h.length>3)))pick=j});
@@ -182,7 +211,7 @@ rec.onerror=e=>{$("qmFb").textContent="🎤 Mic problem ("+e.error+"). Tap your 
 /* timed test */
 let T=[],ti=0,ts=0,timer=null,left=900,wrong=[];
 function startTest(){T=pool().slice(0,25);ti=0;ts=0;left=900;wrong=[];clearInterval(timer);timer=setInterval(()=>{left--;const e=$("tClock");if(e)e.textContent=Math.floor(left/60)+":"+String(left%60).padStart(2,"0");if(left<=0)endTest()},1000);tShow()}
-function tShow(){if(ti>=T.length)return endTest();const q=T[ti],b=$("testBox");b.innerHTML='<p>⏱️ <b id="tClock">'+Math.floor(left/60)+":"+String(left%60).padStart(2,"0")+"</b> • Question "+(ti+1)+"/25 • Score "+ts+'</p><div class="q"><b>'+q.q+'</b><div class="opts"></div></div>';const o=b.querySelector(".opts");o.parentNode.appendChild(spk(q.q+". "+q.o.join(". ")));
+function tShow(){if(ti>=T.length)return endTest();const q=T[ti],b=$("testBox");b.innerHTML='<p>⏱️ <b id="tClock">'+Math.floor(left/60)+":"+String(left%60).padStart(2,"0")+"</b> • Question "+(ti+1)+"/25 • Score "+ts+'</p><div class="q"><b>'+q.q+'</b><div class="opts"></div></div>';const o=b.querySelector(".opts");o.parentNode.appendChild(spk([q.q,...q.o]));
 q.o.forEach((c,j)=>{const x=document.createElement("button");x.textContent=c;x.onclick=()=>{if(o.dataset.done)return;o.dataset.done=1;o.children[q.a].classList.add("ok");if(j===q.a)ts++;else{x.classList.add("no");wrong.push(q)}setTimeout(()=>{ti++;tShow()},900)};o.appendChild(x)})}
 function endTest(){clearInterval(timer);const p=Math.round(ts/25*100);$("testBox").innerHTML='<p class="score">Final score: '+ts+"/25 ("+p+"%) "+(p>=90?"🏆 Amazing!":p>=75?"🎉 Great job!":"💪 Keep practicing!")+"</p>"+(wrong.length?"<h3>Review these:</h3><ul>"+wrong.map(q=>"<li>"+q.q+" → <b>"+q.o[q.a]+"</b></li>").join("")+"</ul>":"")+'<button class="btn alt" onclick="startTest()">Try again</button>';say("Test finished. You scored "+ts+" out of 25, "+p+" percent.")}
 </script></body></html>
