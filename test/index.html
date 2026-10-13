@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Richard's Cell Test Prep – Friday Oct 16</title>
+<style>
+:root{--gd:#1a5c3a;--gm:#2d8a55;--gl:#4caf70;--gp:#e8f5e9;--bg:#f4faf5;--card:#fff;--text:#1b2e1f;--soft:#4a6350;--acc:#ff8f00;--accs:#fff3e0;--bad:#e53935;--good:#2e7d32}
+*{box-sizing:border-box}body{margin:0;font-family:"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+header{background:linear-gradient(135deg,var(--gd),var(--gl));color:#fff;padding:28px 16px;text-align:center}
+header h1{margin:0;font-size:1.9rem}header p{margin:6px 0 0}
+nav{position:sticky;top:0;z-index:9;background:var(--gd);display:flex;overflow-x:auto;gap:4px;padding:6px}
+nav a{color:#fff;text-decoration:none;padding:6px 12px;border-radius:20px;white-space:nowrap;font-size:.9rem}nav a:hover{background:var(--gm)}
+main{max-width:1000px;margin:auto;padding:12px}
+section{background:var(--card);border-radius:16px;padding:18px;margin:18px 0;box-shadow:0 2px 10px #0001}
+h2{color:var(--gd);margin-top:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.card{background:var(--gp);border-radius:12px;padding:14px;position:relative}
+.card h3{margin:0 0 6px;color:var(--gd);padding-right:40px}
+.spk{position:absolute;top:8px;right:8px;border:none;background:#fff;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:1.1rem;box-shadow:0 1px 4px #0002}
+.btn{border:none;background:var(--gm);color:#fff;padding:8px 14px;border-radius:20px;cursor:pointer;font-size:.95rem;margin:3px}
+.btn.alt{background:var(--acc)}.btn.sm{padding:4px 10px;font-size:.85rem}
+.hook{font-size:2rem}.miss{font-size:.88rem;background:#fff;border-left:4px solid var(--acc);padding:6px;border-radius:6px;margin-top:6px}
+.tag{display:inline-block;font-size:.75rem;padding:2px 8px;border-radius:10px;background:#fff;margin:2px}
+.watch{background:var(--accs);border:2px solid var(--acc);border-radius:12px;padding:14px}
+.q{border-bottom:1px solid #ddd;padding:10px 0;position:relative;padding-right:40px}
+.q .spk{top:6px}
+.opts button{display:block;width:100%;text-align:left;margin:4px 0;padding:8px;border:2px solid #cfd8dc;background:#fff;border-radius:8px;cursor:pointer;font-size:.95rem}
+.opts button.ok{border-color:var(--good);background:#e8f5e9}.opts button.no{border-color:var(--bad);background:#ffebee}
+input[type=text],select,textarea{padding:7px;border:2px solid #cfd8dc;border-radius:8px;font-size:.95rem;max-width:100%}
+.fb{font-weight:600;margin-top:4px}.fb.ok{color:var(--good)}.fb.no{color:var(--bad)}
+.score{font-size:1.1rem;font-weight:700;color:var(--gd)}
+.bank{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.cellwrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+svg .org{cursor:pointer;transition:transform .2s}svg .org:hover{opacity:.8}
+@keyframes wob{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}.alive{animation:wob 4s ease-in-out infinite;transform-origin:center}
+#info{min-height:60px;background:var(--gp);border-radius:10px;padding:10px;margin-top:8px}
+.flash{perspective:900px;width:100%;max-width:420px;height:220px;margin:auto;cursor:pointer}
+.fin{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}.flash.f .fin{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;font-size:1.25rem;background:var(--gm);color:#fff}
+.face.b{transform:rotateY(180deg);background:#fff;color:var(--text);border:3px solid var(--gm);font-size:1.05rem}
+.center{text-align:center}#qm{background:#263238;color:#fff;border-radius:12px;padding:14px}
+#qm .opts button{color:#000}.mic{background:var(--bad)}
+.reveal{display:none;background:#fffde7;border-radius:8px;padding:8px;margin-top:6px}
+</style></head><body>
+<header><h1>🔬 Richard's Cell Test Prep</h1><p>Test: <b>Friday, Oct 16</b> • Tap 🔊 to hear anything • Try 🎤 Quiz Master!</p>
+<p><button class="btn alt" onclick="stopAll()">⏹ Stop voice</button> Voice speed <input type="range" min="0.6" max="1.3" step="0.1" value="0.95" id="rate"></p></header>
+<nav><a href="#key">Key Ideas</a><a href="#org">Organelles</a><a href="#watch">Watch Out</a><a href="#fill">1 Fill-in</a><a href="#mc">2 Multiple Choice</a><a href="#match">3 Matching</a><a href="#tf">4 True/False</a><a href="#sa">5 Short Answer</a><a href="#flash">Flashcards</a><a href="#qmS">Quiz Master</a><a href="#test">Practice Test</a></nav>
+<main>
+<section id="key"><h2>🌟 Key Ideas <button class="btn sm" onclick="readSec('key')">🔊 Read whole section</button></h2><div class="grid" id="keyGrid"></div></section>
+
+<section id="org"><h2>🧩 Organelles – Richard's Memory Hooks <button class="btn sm" onclick="readSec('org')">🔊 Read whole section</button></h2>
+<p>Tap any part of a cell to learn about it!</p>
+<div class="cellwrap">
+<svg viewBox="0 0 300 240" width="320" aria-label="Animal cell"><text x="150" y="16" text-anchor="middle" font-weight="bold" fill="#1a5c3a">Animal Cell</text>
+<g class="alive"><ellipse class="org" data-o="membrane" cx="150" cy="128" rx="135" ry="100" fill="#fff3e0" stroke="#42a5f5" stroke-width="6"/>
+<circle class="org" data-o="nucleus" cx="150" cy="125" r="34" fill="#b39ddb" stroke="#7e57c2" stroke-width="3"/><circle cx="155" cy="120" r="10" fill="#7e57c2" pointer-events="none"/>
+<path class="org" data-o="er" d="M190 100 q20 10 10 25 q-10 15 10 25 q15 8 5 22" fill="none" stroke="#ffb74d" stroke-width="7"/>
+<ellipse class="org" data-o="mitochondria" cx="80" cy="90" rx="26" ry="12" fill="#e57373"/><ellipse class="org" data-o="mitochondria" cx="95" cy="180" rx="24" ry="11" fill="#e57373" transform="rotate(20 95 180)"/>
+<g class="org" data-o="golgi"><path d="M225 150 q20 0 30 15" stroke="#ab47bc" stroke-width="5" fill="none"/><path d="M222 160 q22 0 30 15" stroke="#ab47bc" stroke-width="5" fill="none"/><path d="M219 170 q22 0 30 15" stroke="#ab47bc" stroke-width="5" fill="none"/></g>
+<circle class="org" data-o="lysosome" cx="210" cy="70" r="11" fill="#ef5350"/><circle class="org" data-o="vacuole" cx="110" cy="60" r="9" fill="#29b6f6"/><circle class="org" data-o="vacuole" cx="60" cy="140" r="8" fill="#29b6f6"/>
+<g class="org" data-o="ribosome" fill="#455a64"><circle cx="130" cy="185" r="3"/><circle cx="140" cy="195" r="3"/><circle cx="170" cy="190" r="3"/><circle cx="200" cy="105" r="3"/><circle cx="210" cy="140" r="3"/></g>
+<rect class="org" data-o="cytoplasm" x="235" y="95" width="30" height="20" fill="transparent"/><text x="250" y="110" font-size="9" text-anchor="middle" pointer-events="none" fill="#4a6350">jelly</text></g></svg>
+<svg viewBox="0 0 300 240" width="320" aria-label="Plant cell"><text x="150" y="16" text-anchor="middle" font-weight="bold" fill="#1a5c3a">Plant Cell</text>
+<g class="alive"><rect class="org" data-o="wall" x="12" y="25" width="276" height="208" rx="10" fill="#d7ccc8" stroke="#8d6e63" stroke-width="8"/>
+<rect class="org" data-o="membrane" x="24" y="37" width="252" height="184" rx="8" fill="#f1f8e9" stroke="#42a5f5" stroke-width="4"/>
+<rect class="org" data-o="cytoplasm" x="30" y="190" width="60" height="25" fill="transparent"/><text x="60" y="207" font-size="9" text-anchor="middle" pointer-events="none" fill="#4a6350">jelly</text>
+<rect class="org" data-o="vacuole" x="110" y="60" width="140" height="110" rx="30" fill="#81d4fa" stroke="#29b6f6" stroke-width="3"/>
+<circle class="org" data-o="nucleus" cx="65" cy="80" r="26" fill="#b39ddb" stroke="#7e57c2" stroke-width="3"/>
+<ellipse class="org" data-o="chloroplast" cx="70" cy="150" rx="22" ry="11" fill="#43a047"/><ellipse class="org" data-o="chloroplast" cx="180" cy="195" rx="22" ry="11" fill="#43a047"/><ellipse class="org" data-o="chloroplast" cx="245" cy="195" rx="18" ry="9" fill="#43a047"/>
+<ellipse class="org" data-o="mitochondria" cx="120" cy="195" rx="20" ry="9" fill="#e57373"/>
+<g class="org" data-o="golgi"><path d="M40 110 q15 0 25 12" stroke="#ab47bc" stroke-width="4" fill="none"/><path d="M38 118 q15 0 25 12" stroke="#ab47bc" stroke-width="4" fill="none"/></g>
+<path class="org" data-o="er" d="M95 70 q10 15 -2 30 q-10 15 5 30" fill="none" stroke="#ffb74d" stroke-width="6"/>
+<g class="org" data-o="ribosome" fill="#455a64"><circle cx="100" cy="85" r="3"/><circle cx="90" cy="110" r="3"/><circle cx="150" cy="185" r="3"/></g></g></svg>
+</div><div id="info">👆 Tap a part of a cell.</div>
+<h3>All organelle cards</h3><div class="grid" id="orgGrid"></div></section>
+
+<section id="watch"><h2>⚠️ Watch Out, Richard! <button class="btn sm" onclick="readSec('watch')">🔊 Read whole section</button></h2><div class="watch" id="watchBox">
+<p><b>Ribosome ≠ Lysosome!</b> On the practice sheet the question "Which organelle makes proteins?" was answered <s>Lysosome</s>. The right answer is <b>Ribosome</b>. Trick: <b>RIBO</b>some = <b>R</b>obot factory that <b>B</b>uilds. <b>LYSO</b>some = <b>L</b>itter / trash can that breaks things down.</p>
+<p><b>Spell these right:</b> mito<b>ch</b>ondria (mi-toe-KON-dree-uh) • ribo<b>somes</b> • nucle<b>us</b> (one) / nucle<b>i</b> (many) • <b>eu</b>karyotic (YOU-carry-otic: "YOU have a nucleus") • <b>pro</b>karyotic ("PRO = NO nucleus").</p>
+<p><b>Don't leave blanks!</b> #3 (eukaryotic) was blank — if stuck, use the word bank and cross off words you already used.</p>
+<p><b>Mitochondria vs chloroplast:</b> Mitochondria = battery that <i>releases</i> energy from sugar. Chloroplast = sugar jar that <i>makes</i> sugar from sunlight.</p></div>
+<p>Spelling practice: <input type="text" id="spIn" placeholder="type the word you hear"> <button class="btn sm" onclick="spSay()">🔊 Say word</button> <button class="btn sm" onclick="spCheck()">Check</button> <span id="spFb" class="fb"></span></p></section>
+
+<section id="fill"><h2>✏️ Part 1: Fill in the Blank <button class="btn sm" onclick="readSec('fill')">🔊 Read whole section</button></h2><div class="bank" id="bank"></div><div id="fillQs"></div><button class="btn" onclick="checkFill()">Check all</button> <span class="score" id="fillScore"></span></section>
+<section id="mc"><h2>🔘 Part 2: Multiple Choice <button class="btn sm" onclick="readSec('mc')">🔊 Read whole section</button></h2><div id="mcQs"></div><span class="score" id="mcScore"></span></section>
+<section id="match"><h2>🔗 Part 3: Matching <button class="btn sm" onclick="readSec('match')">🔊 Read whole section</button></h2><div id="matchQs"></div><button class="btn" onclick="checkMatch()">Check matches</button> <span class="score" id="matchScore"></span></section>
+<section id="tf"><h2>✅ Part 4: True or False <button class="btn sm" onclick="readSec('tf')">🔊 Read whole section</button></h2><p>If it's false, think about how to rewrite it to make it true — then see the fix.</p><div id="tfQs"></div><span class="score" id="tfScore"></span></section>
+<section id="sa"><h2>📝 Part 5: Short Answer <button class="btn sm" onclick="readSec('sa')">🔊 Read whole section</button></h2><p>Write (or say) your answer, then tap "Check yourself" to compare.</p><div id="saQs"></div></section>
+
+<section id="flash"><h2>🃏 Flashcards</h2><div class="flash" id="fc" onclick="this.classList.toggle('f')"><div class="fin"><div class="face" id="fcF"></div><div class="face b" id="fcB"></div></div></div>
+<p class="center"><button class="btn" onclick="fcMove(-1)">◀ Prev</button><button class="btn" onclick="fcSpeak()">🔊 Read</button><button class="btn alt" onclick="fcShuffle()">🔀 Shuffle</button><button class="btn" onclick="fcMove(1)">Next ▶</button><br><span id="fcN"></span></p></section>
+
+<section id="qmS"><h2>🎤 Quiz Master Mode</h2><p>I read a question out loud. Answer by tapping, or press 🎤 and <b>say</b> the answer (works in Chrome/Edge; on other browsers just tap). For multiple choice you can say the letter or the word.</p>
+<div id="qm"><p class="center"><button class="btn" onclick="qmStart()">▶ Start Quiz Master</button></p></div></section>
+
+<section id="test"><h2>⏱️ Timed Practice Test (25 questions)</h2><div id="testBox"><p>Mixed questions from every part, shuffled. You have 15 minutes. Good luck, Richard!</p><button class="btn alt" onclick="startTest()">Start test</button></div></section>
+<p class="center" style="color:#4a6350">Made for Richard • Also see the <a href="../">cell organelles guide</a></p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const KEY=[
+["🧬 Cell Theory","1) All living things are made of cells. 2) Cells are the smallest working unit of life. 3) All cells come from pre-existing cells."],
+["🦠 Prokaryotic Cells","Bacteria. NO nucleus and no membrane-bound organelles. DNA floats free in the cytoplasm. Remember: PRO = NO nucleus."],
+["🌿 Eukaryotic Cells","Plant and animal cells. They HAVE a nucleus and membrane-bound organelles. Remember: EU sounds like YOU, and you have a nucleus!"],
+["🪜 Levels of Organization","Cell, then tissue, then organ, then organ system, then organism. Like letters, words, sentences, paragraphs, a whole book."],
+["🤝 Organelles Work Together","Ribosomes make proteins, the ER moves them, and the Golgi packages and ships them. Mitochondria power it all."],
+["💧 Needs of Living Things","Water, nutrients or food, space, and air or gases like oxygen and carbon dioxide."],
+["⚔️ Limited Resources","When there isn't enough food, water, or space, organisms compete. This affects who survives and how big a population gets."],
+["🌡️ Homeostasis","Keeping stable internal conditions, like sweating to cool down or shivering to warm up."],
+["🦒 Adaptation & Evolution","An adaptation is an inherited trait that helps survival. Evolution means populations change over many generations as helpful traits get passed on. Individuals do NOT choose their traits."]];
+const ORG={
+membrane:["Cell Membrane","🛡️","Bouncer / security guard","Controls what enters and leaves the cell. Made of phospholipids. Found in ALL cells.","Bad stuff gets in and good stuff leaks out. The cell dies.","Both"],
+cytoplasm:["Cytoplasm","🍩","Jelly donut","Jelly-like fluid that fills the cell, supports organelles, and lets nutrients diffuse.","Organelles would collapse and nothing could move around.","Both"],
+nucleus:["Nucleus","🎬","Director with clapboard: Lights, camera, action!","Contains DNA and the nucleolus. Directs all cell activities. Eukaryotes only; prokaryotes have free-floating DNA.","No instructions. The cell can't grow, work, or divide.","Eukaryotes"],
+ribosome:["Ribosome","🤖","Factory robot","Builds proteins from amino acids. Not membrane-bound. Thousands per cell, on the ER or floating. Found in ALL cells.","No proteins get made, so the cell can't repair or grow.","All cells"],
+mitochondria:["Mitochondria","🔋","Battery / powerhouse","Rod-shaped. Releases energy from sugar by cellular respiration.","No energy. The cell runs out of power.","Plant and animal"],
+chloroplast:["Chloroplast","🍯","Sugar jar","Plants only. Green chlorophyll uses sunlight, water, and carbon dioxide to make sugar by photosynthesis.","The plant can't make food and starves.","Plants only"],
+golgi:["Golgi Bodies","🚚","UPS truck","5 to 8 stacked sacs. Modifies, sorts, and packages proteins and lipids and ships them out.","Proteins never get packaged or delivered.","Plant and animal"],
+er:["Endoplasmic Reticulum (ER)","🚂","Train: All aboard!","Tubes and sacs that transport proteins inside the cell. Rough ER has ribosomes; smooth ER has none.","Proteins get stuck where they were made.","Plant and animal"],
+lysosome:["Lysosome","🗑️","Trash can / garbage disposal","Breaks down waste, worn-out parts, and invading bacteria and viruses. Mainly in animal cells; plants use a lytic vacuole.","Waste piles up and poisons the cell.","Mostly animal"],
+vacuole:["Vacuole","🏊","Water tank: Let's go in for a dip!","Stores water, food, and waste. Plants have one LARGE vacuole that keeps their shape; animals have many small ones.","A plant wilts and droops.","Both (big in plants)"],
+wall:["Cell Wall","🧱","Brick wall: I need some support!","Rigid layer OUTSIDE the cell membrane that supports and protects. Plants and bacteria only, never animals.","The plant cell could burst or lose its shape.","Plants and bacteria"]};
+const BANK=["adaptation","cell","cell membrane","cell wall","cell theory","chloroplast","cytoplasm","endoplasmic reticulum","eukaryotic","evolution","Golgi bodies","homeostasis","lysosome","mitochondria","nucleus","organ","organ system","organism","prokaryotic","ribosome","tissue","vacuole"];
+const FILL=[["The ___ says all living things are made of cells, cells are the basic unit of life, and cells come from existing cells.","cell theory"],["___ cells do not have a nucleus or membrane-bound organelles (like bacteria).","prokaryotic"],["___ cells have a nucleus and membrane-bound organelles (like plant and animal cells).","eukaryotic"],["The ___ controls what enters and leaves the cell.","cell membrane"],["The ___ is the jelly-like material inside the cell where organelles are found.","cytoplasm"],["The ___ contains DNA and directs cell activities.","nucleus"],["A ___ builds proteins.","ribosome"],["The ___ releases energy through cellular respiration.","mitochondria"],["The ___ uses light energy to make sugar.","chloroplast"],["The ___ modify, sort, and package materials.","Golgi bodies"],["The ___ transports materials within the cell.","endoplasmic reticulum"],["A ___ breaks down waste and worn-out parts.","lysosome"],["A ___ stores water and materials; plants have a large one.","vacuole"],["The ___ gives support and is found outside the cell membrane in plant cells.","cell wall"],["A ___ is the smallest level of organization.","cell"],["A group of similar cells working together is a ___.","tissue"],["Different tissues working together form an ___.","organ"],["Organs working together form an ___.","organ system"],["A complete living thing is an ___.","organism"],["___ is maintaining stable internal conditions.","homeostasis"],["An inherited trait that helps an organism survive is an ___.","adaptation"],["___ is the change in populations over generations.","evolution"]];
+const MC=[["The cell theory states that:",["Only animals are made of cells","All living things are made of cells","Cells come from nonliving things","Cells are only in plants"],1],["Which is an example of a prokaryotic organism?",["Oak tree","Human","Bacterium","Mushroom"],2],["Correct order of levels of organization:",["Tissue → cell → organ → organism","Cell → tissue → organ → organ system → organism","Organ → cell → tissue → organism","Cell → organ → tissue → organism"],1],["Which organelle makes proteins?",["Lysosome","Vacuole","Ribosome","Cell wall"],2],["Which organelle packages materials?",["Nucleus","Golgi bodies","Mitochondria","Chloroplast"],1],["Which structures are found only in plant cells?",["Nucleus and ribosomes","Cell wall and chloroplasts","Cytoplasm and membrane","Mitochondria and lysosomes"],1],["Homeostasis means:",["Changing over generations","Maintaining stable internal conditions","Making sugar from light","Breaking down waste"],1],["What does competition for limited resources show?",["Resources never run out","Resource availability affects survival and population size","All organisms survive","Only plants compete"],1],["Which organelle directs cell activities?",["Nucleus","Vacuole","Cell wall","Cytoplasm"],0],["Which organelle releases energy?",["Chloroplast","Ribosome","Mitochondrion","Golgi body"],2]];
+const MATCH=[["Cell wall","Supports and protects plant cells"],["Chloroplast","Makes sugar using light energy"],["Cell membrane","Controls what enters and leaves"],["Cytoplasm","Jelly-like fluid holding organelles"],["Nucleus","Contains DNA, directs activities"],["Ribosome","Builds proteins"],["Mitochondrion","Releases energy from food"],["Golgi bodies","Modifies, sorts, packages materials"],["Endoplasmic reticulum","Transports materials in the cell"],["Lysosome","Breaks down waste"],["Vacuole","Stores water and materials"]];
+const TF=[["All living things are made of cells.",true,""],["Bacteria are eukaryotic cells.",false,"Bacteria are PROKARYOTIC; they have no nucleus."],["Eukaryotic cells have a nucleus.",true,""],["Ribosomes make proteins.",true,""],["Chloroplasts release energy through cellular respiration.",false,"MITOCHONDRIA release energy; chloroplasts make sugar from light."],["Plant cells have a cell wall.",true,""],["Homeostasis means changing over many generations.",false,"Homeostasis means maintaining stable internal conditions. (Change over generations is evolution.)"],["Limited resources can cause competition.",true,""],["Individual organisms choose to change their traits to survive.",false,"Individuals don't choose traits; populations change over generations as inherited traits affect survival."],["Organs work together to form organ systems.",true,""]];
+const SA=[["Name two things all living things need.","Any two: water, nutrients or food, space, air or gases like oxygen."],["What is the difference between prokaryotic and eukaryotic cells?","Prokaryotic cells, like bacteria, have no nucleus or membrane-bound organelles. Eukaryotic cells, like plants and animals, have a nucleus and membrane-bound organelles."],["How are cells, tissues, organs, and organ systems related?","Cells group into tissues, tissues form organs, organs work together in organ systems, and organ systems make up an organism. Each level builds on the one before."],["Name two organelles and explain how they help the cell work.","Example: Ribosomes make proteins, and the Golgi bodies package and ship them. Or: mitochondria release energy, and the nucleus directs everything."],["What can happen when resources are limited?","Organisms compete for food, water, and space. Some don't survive, so the population size can shrink or stay limited."],["What is the difference between adaptation and homeostasis?","Homeostasis is an individual keeping stable internal conditions right now, like sweating. Adaptation is an inherited trait that helps survival, and it spreads through a population over generations by evolution."]];
+/* voice */
+let synth=window.speechSynthesis,voice=null;
+function pickVoice(){if(!synth)return;const v=synth.getVoices();voice=v.find(x=>/en-US/.test(x.lang)&&/Natural|Google|Samantha|Aria|Jenny/i.test(x.name))||v.find(x=>/^en/.test(x.lang))||null}
+if(synth){pickVoice();synth.onvoiceschanged=pickVoice}
+function say(t,cb){if(!synth){alert("Voice isn't supported on this browser.");cb&&cb();return}synth.cancel();const u=new SpeechSynthesisUtterance(t.replace(/___/g,"blank").replace(/→/g,", then "));if(voice)u.voice=voice;u.rate=+$("rate").value;u.onend=()=>cb&&cb();synth.speak(u)}
+function stopAll(){synth&&synth.cancel();if(rec)try{rec.abort()}catch(e){}}
+const spk=t=>{const b=document.createElement("button");b.className="spk";b.textContent="🔊";b.title="Read aloud";b.onclick=e=>{e.stopPropagation();say(t)};return b};
+function readSec(id){const s=$(id).cloneNode(true);s.querySelectorAll("button,select,input,.reveal,.bank").forEach(n=>n.remove());say(s.innerText)}
+function card(h,html,t){const d=document.createElement("div");d.className="card";d.innerHTML="<h3>"+h+"</h3>"+html;d.appendChild(spk(t));return d}
+/* render */
+KEY.forEach(k=>$("keyGrid").appendChild(card(k[0],"<p>"+k[1]+"</p>",k[0].replace(/^\S+ /,"")+". "+k[1])));
+function orgText(o){return o[0]+". Memory hook: "+o[2]+". "+o[3]+" If it's missing: "+o[4]}
+Object.values(ORG).forEach(o=>$("orgGrid").appendChild(card(o[0],'<div class="hook">'+o[1]+'</div><b>'+o[2]+'</b><p>'+o[3]+'</p><span class="tag">📍 '+o[5]+'</span><div class="miss">❓ If missing: '+o[4]+'</div>',orgText(o))));
+document.querySelectorAll(".org").forEach(el=>el.addEventListener("click",()=>{const o=ORG[el.dataset.o];$("info").innerHTML="<b>"+o[1]+" "+o[0]+"</b> — <i>"+o[2]+"</i><br>"+o[3]+"<br><small>📍 "+o[5]+" • If missing: "+o[4]+"</small>";say(orgText(o))}));
+const norm=s=>s.toLowerCase().replace(/[^a-z ]/g,"").replace(/\s+/g," ").trim();
+BANK.forEach(w=>{const s=document.createElement("span");s.className="tag";s.style.background="#c8e6c9";s.textContent=w;$("bank").appendChild(s)});
+FILL.forEach((f,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML="<b>"+(i+1)+".</b> "+f[0].replace("___",'<select id="f'+i+'"><option value="">—choose—</option>'+BANK.map(w=>"<option>"+w+"</option>").join("")+"</select>")+'<div class="fb" id="ff'+i+'"></div>';d.appendChild(spk(f[0]));$("fillQs").appendChild(d)});
+function checkFill(){let s=0;FILL.forEach((f,i)=>{const ok=$("f"+i).value===f[1];s+=ok;$("ff"+i).className="fb "+(ok?"ok":"no");$("ff"+i).textContent=ok?"✅ Correct!":"❌ Answer: "+f[1]});$("fillScore").textContent="Score: "+s+"/22";say("You got "+s+" out of 22")}
+function mcRender(arr,box,scoreEl){let s=0,n=0;arr.forEach((q,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML="<b>"+(i+1)+". "+q[0]+"</b>";const o=document.createElement("div");o.className="opts";q[1].forEach((c,j)=>{const b=document.createElement("button");b.textContent="ABCD"[j]+") "+c;b.onclick=()=>{if(o.dataset.done)return;o.dataset.done=1;n++;b.classList.add(j===q[2]?"ok":"no");o.children[q[2]].classList.add("ok");if(j===q[2]){s++;say("Correct!")}else say("Not quite. The answer is "+q[1][q[2]]);if(scoreEl)scoreEl.textContent="Score: "+s+"/"+n};o.appendChild(b)});d.appendChild(o);d.appendChild(spk(q[0]+" "+q[1].map((c,j)=>"ABCD"[j]+", "+c).join(". ")));box.appendChild(d)})}
+mcRender(MC,$("mcQs"),$("mcScore"));
+const L="ABCDEFGHIJK",mix=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+const mOrder=mix(MATCH.map((_,i)=>i));
+$("matchQs").innerHTML="<p><b>Functions:</b><br>"+mOrder.map((k,j)=>L[j]+") "+MATCH[k][1]).join("<br>")+"</p>";
+MATCH.forEach((m,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML=(i+1)+". <b>"+m[0]+"</b> → <select id=\"m"+i+"\"><option value=''>?</option>"+mOrder.map((k,j)=>"<option value='"+k+"'>"+L[j]+"</option>").join("")+'</select> <span class="fb" id="mf'+i+'"></span>';d.appendChild(spk(m[0]));$("matchQs").appendChild(d)});
+function checkMatch(){let s=0;MATCH.forEach((m,i)=>{const ok=$("m"+i).value==i;s+=ok;$("mf"+i).className="fb "+(ok?"ok":"no");$("mf"+i).textContent=ok?"✅":"❌ "+m[1]});$("matchScore").textContent="Score: "+s+"/11";say("You matched "+s+" out of 11")}
+let tfS=0,tfN=0;TF.forEach((t,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML="<b>"+(i+1)+".</b> "+t[0]+'<br><button class="btn sm">True</button><button class="btn sm alt">False</button><div class="fb"></div>';const [bt,bf]=d.querySelectorAll("button"),fb=d.querySelector(".fb");[bt,bf].forEach((b,j)=>b.onclick=()=>{if(fb.textContent)return;const ok=(j===0)===t[1];tfN++;tfS+=ok;fb.className="fb "+(ok?"ok":"no");fb.textContent=(ok?"✅ Correct! ":"❌ Oops! ")+"It's "+(t[1]?"TRUE.":"FALSE. Fix: "+t[2]);say(fb.textContent);$("tfScore").textContent="Score: "+tfS+"/"+tfN});d.appendChild(spk(t[0]));$("tfQs").appendChild(d)});
+SA.forEach((q,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML="<b>"+(i+1)+". "+q[0]+'</b><br><textarea rows="2" style="width:100%"></textarea><button class="btn sm">Check yourself</button><div class="reveal">⭐ Model answer: '+q[1]+"</div>";d.querySelector("button").onclick=()=>{d.querySelector(".reveal").style.display="block";say("Model answer: "+q[1])};d.appendChild(spk(q[0]));$("saQs").appendChild(d)});
+/* spelling */
+const SP=["mitochondria","ribosomes","nucleus","eukaryotic","prokaryotic","chloroplast","cytoplasm","lysosome","homeostasis","endoplasmic reticulum"];let spW=SP[0];
+function spSay(){spW=SP[Math.floor(Math.random()*SP.length)];$("spIn").value="";$("spFb").textContent="";say("Spell: "+spW)}
+function spCheck(){const ok=norm($("spIn").value)===spW;$("spFb").className="fb "+(ok?"ok":"no");$("spFb").textContent=ok?"✅ Perfect spelling!":"❌ It's spelled: "+spW}
+/* flashcards */
+let FC=[...Object.values(ORG).map(o=>[o[1]+" "+o[0],o[2]+" — "+o[3]]),...FILL.map(f=>[f[0],f[1]])],fi=0;
+function fcShow(){$("fc").classList.remove("f");$("fcF").textContent=FC[fi][0];$("fcB").textContent=FC[fi][1];$("fcN").textContent="Card "+(fi+1)+" of "+FC.length+" (tap card to flip)"}
+function fcMove(d){fi=(fi+d+FC.length)%FC.length;fcShow()}function fcShuffle(){FC=mix(FC);fi=0;fcShow()}
+function fcSpeak(){say($("fc").classList.contains("f")?FC[fi][1]:FC[fi][0])}fcShow();
+/* question pool */
+function pool(){const P=[];MC.forEach(q=>P.push({q:q[0],o:q[1],a:q[2]}));
+FILL.forEach(f=>{const wr=mix(BANK.filter(w=>w!==f[1])).slice(0,3),o=mix([f[1],...wr]);P.push({q:f[0],o,a:o.indexOf(f[1])})});
+TF.forEach(t=>P.push({q:"True or false: "+t[0],o:["True","False"],a:t[1]?0:1,x:t[2]}));
+MATCH.forEach(m=>{const wr=mix(MATCH.filter(x=>x!==m)).slice(0,3).map(x=>x[1]),o=mix([m[1],...wr]);P.push({q:"What does the "+m[0]+" do?",o,a:o.indexOf(m[1])})});return mix(P)}
+/* quiz master */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,QM=[],qi=0,qs=0;
+function qmStart(){QM=pool().slice(0,10);qi=0;qs=0;qmAsk()}
+function qmAsk(){const box=$("qm");if(qi>=QM.length){box.innerHTML='<p class="center score" style="color:#fff">Quiz Master score: '+qs+"/"+QM.length+'</p><p class="center"><button class="btn" onclick="qmStart()">Play again</button></p>';say("Quiz over! You got "+qs+" out of "+QM.length+". Great job Richard!");return}
+const q=QM[qi];box.innerHTML="<p>Question "+(qi+1)+" of "+QM.length+"</p><h3>"+q.q+'</h3><div class="opts"></div><p>'+(SR?'<button class="btn mic" id="micB">🎤 Say answer</button>':"<small>🎤 Speaking answers needs Chrome or Edge. Tap instead!</small>")+' <button class="btn sm" onclick="qmRead()">🔁 Repeat</button></p><div class="fb" id="qmFb"></div>';
+const o=box.querySelector(".opts");q.o.forEach((c,j)=>{const b=document.createElement("button");b.textContent=(q.o.length>2?"ABCD"[j]+") ":"")+c;b.onclick=()=>qmAns(j);o.appendChild(b)});if(SR)$("micB").onclick=listen;qmRead()}
+function qmRead(){const q=QM[qi];say(q.q+". "+(q.o.length>2?q.o.map((c,j)=>"ABCD"[j]+", "+c).join(". "):"True or false?"))}
+function qmAns(j){const q=QM[qi],o=$("qm").querySelector(".opts");if(o.dataset.done)return;o.dataset.done=1;o.children[q.a].classList.add("ok");const ok=j===q.a;if(!ok&&j>=0)o.children[j].classList.add("no");qs+=ok;const msg=ok?"Correct!":"The answer is "+q.o[q.a]+". "+(q.x||"");$("qmFb").className="fb "+(ok?"ok":"no");$("qmFb").textContent=(ok?"✅ ":"❌ ")+msg;say(msg,()=>setTimeout(()=>{qi++;qmAsk()},700))}
+function listen(){stopAll();rec=new SR();rec.lang="en-US";rec.maxAlternatives=3;$("qmFb").textContent="🎤 Listening...";
+rec.onresult=e=>{const alts=[...e.results[0]].map(r=>norm(r.transcript));const q=QM[qi];let pick=-1;
+for(const h of alts){q.o.forEach((c,j)=>{const n=norm(c);if(pick<0&&(h===n||h.includes(n)||(n.length>3&&n.includes(h)&&h.length>3)))pick=j});
+if(pick<0&&q.o.length>2){const m=h.match(/^(?:letter |answer )?([abcd]|bee|see|sea|dee)$/);if(m)pick={a:0,b:1,bee:1,c:2,see:2,sea:2,d:3,dee:3}[m[1]]}if(pick>=0)break}
+if(pick<0){$("qmFb").textContent='🤔 I heard "'+alts[0]+'". Try again or tap.';say("Sorry, I didn't catch that. Try again or tap your answer.");return}qmAns(pick)};
+rec.onerror=e=>{$("qmFb").textContent="🎤 Mic problem ("+e.error+"). Tap your answer instead."};rec.start()}
+/* timed test */
+let T=[],ti=0,ts=0,timer=null,left=900,wrong=[];
+function startTest(){T=pool().slice(0,25);ti=0;ts=0;left=900;wrong=[];clearInterval(timer);timer=setInterval(()=>{left--;const e=$("tClock");if(e)e.textContent=Math.floor(left/60)+":"+String(left%60).padStart(2,"0");if(left<=0)endTest()},1000);tShow()}
+function tShow(){if(ti>=T.length)return endTest();const q=T[ti],b=$("testBox");b.innerHTML='<p>⏱️ <b id="tClock">'+Math.floor(left/60)+":"+String(left%60).padStart(2,"0")+"</b> • Question "+(ti+1)+"/25 • Score "+ts+'</p><div class="q"><b>'+q.q+'</b><div class="opts"></div></div>';const o=b.querySelector(".opts");o.parentNode.appendChild(spk(q.q+". "+q.o.join(". ")));
+q.o.forEach((c,j)=>{const x=document.createElement("button");x.textContent=c;x.onclick=()=>{if(o.dataset.done)return;o.dataset.done=1;o.children[q.a].classList.add("ok");if(j===q.a)ts++;else{x.classList.add("no");wrong.push(q)}setTimeout(()=>{ti++;tShow()},900)};o.appendChild(x)})}
+function endTest(){clearInterval(timer);const p=Math.round(ts/25*100);$("testBox").innerHTML='<p class="score">Final score: '+ts+"/25 ("+p+"%) "+(p>=90?"🏆 Amazing!":p>=75?"🎉 Great job!":"💪 Keep practicing!")+"</p>"+(wrong.length?"<h3>Review these:</h3><ul>"+wrong.map(q=>"<li>"+q.q+" → <b>"+q.o[q.a]+"</b></li>").join("")+"</ul>":"")+'<button class="btn alt" onclick="startTest()">Try again</button>';say("Test finished. You scored "+ts+" out of 25, "+p+" percent.")}
+</script></body></html>
